@@ -1,0 +1,10 @@
+﻿{
+  "folders": [
+    { "name": "后端-Go", "path": "backend" },
+    { "name": "前端-React", "path": "frontend" }
+  ],
+  "settings": {
+    "go.inferGopath": true,
+    "go.useLanguageServer": true
+  }
+}

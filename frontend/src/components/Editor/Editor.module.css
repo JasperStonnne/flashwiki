@@ -1,0 +1,115 @@
+.wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.toolbarRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-toolbar-border);
+  background: var(--color-toolbar-bg);
+}
+
+.editorArea {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 400px;
+}
+
+/* Table context menu */
+.tableMenu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  background: rgba(28, 28, 30, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.tableMenuBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: var(--space-1) var(--space-2);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-toolbar-text);
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.tableMenuBtn:hover {
+  background: var(--color-toolbar-btn-hover-bg);
+  color: var(--color-toolbar-text-hover);
+}
+
+.tableMenuDivider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Drag handle */
+.dragHandle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  color: var(--color-text-placeholder);
+  cursor: grab;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.dragHandle:hover {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+/* Tooltip */
+.dragHandle::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  transform: translateX(-50%);
+  padding: 2px 8px;
+  background: var(--color-toolbar-bg);
+  color: var(--color-toolbar-text-active);
+  font-size: 11px;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+  transition-delay: 300ms;
+}
+
+.dragHandle:hover::after {
+  opacity: 1;
+}

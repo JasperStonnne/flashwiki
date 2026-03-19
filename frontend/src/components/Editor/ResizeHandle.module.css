@@ -1,0 +1,51 @@
+.container {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.container:hover .handleLeft,
+.container:hover .handleRight {
+  opacity: 1;
+}
+
+.handleLeft,
+.handleRight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  cursor: ew-resize;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+
+.handleLeft {
+  left: -4px;
+}
+
+.handleRight {
+  right: -4px;
+}
+
+.handleLeft::after,
+.handleRight::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 40px;
+  max-height: 50%;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+
+.handleLeft::after {
+  left: 4px;
+}
+
+.handleRight::after {
+  right: 4px;
+}
