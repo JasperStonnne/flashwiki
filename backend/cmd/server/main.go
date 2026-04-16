@@ -28,7 +28,7 @@ func main() {
 
 	pool, err := db.Connect(ctx, cfg)
 	if err != nil {
-		appLog.Fatal().Msg("database startup probe failed")
+		appLog.Fatal().Err(err).Msg("database startup probe failed")
 	}
 	defer pool.Close()
 
