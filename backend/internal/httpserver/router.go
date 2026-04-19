@@ -8,10 +8,13 @@ import (
 	"fpgwiki/backend/internal/config"
 	"fpgwiki/backend/internal/httpserver/handlers"
 	"fpgwiki/backend/internal/httpserver/middleware"
+	"fpgwiki/backend/internal/ws"
 )
 
 func NewRouter(cfg config.Config, log zerolog.Logger, pool *pgxpool.Pool) *gin.Engine {
 	r := gin.New()
+	hubManager := ws.NewHubManager(log)
+
 	r.Use(
 		middleware.Recover(log),
 		middleware.RequestID(),
@@ -22,7 +25,7 @@ func NewRouter(cfg config.Config, log zerolog.Logger, pool *pgxpool.Pool) *gin.E
 	r.GET("/ping", handlers.Health(pool))
 
 	api := r.Group("/api")
-	_ = api
+	api.GET("/ws", ws.Handler(cfg, hubManager, log))
 
 	return r
 }
