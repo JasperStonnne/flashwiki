@@ -7,11 +7,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
-
 	"fpgwiki/backend/internal/config"
 	"fpgwiki/backend/internal/db"
-	"fpgwiki/backend/internal/httpserver/handlers"
+	"fpgwiki/backend/internal/httpserver"
 	"fpgwiki/backend/internal/logger"
 )
 
@@ -32,9 +30,7 @@ func main() {
 	}
 	defer pool.Close()
 
-	router := gin.New()
-	router.Use(gin.Logger(), gin.Recovery())
-	router.GET("/ping", handlers.Health(pool))
+	router := httpserver.NewRouter(cfg, appLog, pool)
 
 	server := &http.Server{
 		Addr:              cfg.HTTPAddr,
