@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
+import { useAuth } from './AuthContext'
 
 type RequireRoleProps = {
   role: string
@@ -7,7 +8,8 @@ type RequireRoleProps = {
 }
 
 export function RequireRole({ role, children }: RequireRoleProps) {
-  const currentRole = localStorage.getItem('user_role')
+  const { userRole } = useAuth()
+  const currentRole = userRole
   if (currentRole !== role) {
     return <Navigate to="/login" replace />
   }
