@@ -847,6 +847,64 @@ func TestGenerateRefreshTokenRawReaderError(t *testing.T) {
 	}
 }
 
+func TestForceLogoutSuccess(t *testing.T) {
+	targetUserID := uuid.New()
+	userRepo := &mockUserRepo{
+		findByIDFn: func(ctx context.Context, id uuid.UUID) (*models.User, error) {
+			return &models.User{ID: targetUserID}, nil
+		},
+		incrementTokenVersionFn: func(ctx context.Context, id uuid.UUID) error {
+			if id != targetUserID {
+				t.Fatalf("unexpected user id: %s", id)
+			}
+			return nil
+		},
+	}
+	refreshRepo := &mockRefreshTokenRepo{
+		revokeAllByUserIDFn: func(ctx context.Context, userID uuid.UUID) error {
+			if userID != targetUserID {
+				t.Fatalf("unexpected user id: %s", userID)
+			}
+			return nil
+		},
+	}
+
+	svc := newTestAuthService(userRepo, refreshRepo)
+	if err := svc.ForceLogout(context.Background(), targetUserID); err != nil {
+		t.Fatalf("force logout: %v", err)
+	}
+	if userRepo.incrementTokenVersionHit != 1 {
+		t.Fatalf("expected increment token version called once, got %d", userRepo.incrementTokenVersionHit)
+	}
+	if refreshRepo.revokeAllByUserIDHit != 1 {
+		t.Fatalf("expected revoke all called once, got %d", refreshRepo.revokeAllByUserIDHit)
+	}
+}
+
+func TestForceLogoutUserNotFound(t *testing.T) {
+	userRepo := &mockUserRepo{
+		findByIDFn: func(ctx context.Context, id uuid.UUID) (*models.User, error) {
+			return nil, nil
+		},
+		incrementTokenVersionFn: func(ctx context.Context, id uuid.UUID) error {
+			t.Fatal("increment should not be called when user not found")
+			return nil
+		},
+	}
+	refreshRepo := &mockRefreshTokenRepo{
+		revokeAllByUserIDFn: func(ctx context.Context, userID uuid.UUID) error {
+			t.Fatal("revoke should not be called when user not found")
+			return nil
+		},
+	}
+
+	svc := newTestAuthService(userRepo, refreshRepo)
+	err := svc.ForceLogout(context.Background(), uuid.New())
+	if !errors.Is(err, ErrUserNotFound) {
+		t.Fatalf("expected ErrUserNotFound, got %v", err)
+	}
+}
+
 func TestLogoutAlreadyRevokedTokenDoesNothing(t *testing.T) {
 	now := time.Now().UTC()
 	refreshRepo := &mockRefreshTokenRepo{

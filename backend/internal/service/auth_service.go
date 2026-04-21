@@ -46,6 +46,7 @@ type AuthService interface {
 	Refresh(ctx context.Context, req models.RefreshRequest) (*models.TokenResponse, error)
 	Logout(ctx context.Context, refreshTokenHex string) error
 	ChangePassword(ctx context.Context, userID uuid.UUID, oldPassword, newPassword string) (*models.TokenResponse, error)
+	ForceLogout(ctx context.Context, targetUserID uuid.UUID) error
 }
 
 type authService struct {
@@ -282,6 +283,25 @@ func (s *authService) ChangePassword(ctx context.Context, userID uuid.UUID, oldP
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
+}
+
+func (s *authService) ForceLogout(ctx context.Context, targetUserID uuid.UUID) error {
+	user, err := s.userRepo.FindByID(ctx, targetUserID)
+	if err != nil {
+		return fmt.Errorf("failed to find user by id: %w", err)
+	}
+	if user == nil {
+		return ErrUserNotFound
+	}
+
+	if err := s.userRepo.IncrementTokenVersion(ctx, targetUserID); err != nil {
+		return fmt.Errorf("failed to increment token version: %w", err)
+	}
+	if err := s.refreshTokenRepo.RevokeAllByUserID(ctx, targetUserID); err != nil {
+		return fmt.Errorf("failed to revoke refresh tokens by user id: %w", err)
+	}
+
+	return nil
 }
 
 func (s *authService) issueTokens(ctx context.Context, user *models.User) (string, string, error) {

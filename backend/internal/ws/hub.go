@@ -40,6 +40,7 @@ type Hub struct {
 	clients    map[string]*Client
 	register   chan *Client
 	unregister chan *Client
+	forceKick  chan uuid.UUID
 	inbound    chan inboundMsg
 	shutdown   chan struct{}
 	done       chan struct{}
@@ -54,6 +55,7 @@ func NewHub(nodeID uuid.UUID, log zerolog.Logger, release func(nodeID uuid.UUID)
 		clients:    make(map[string]*Client),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
+		forceKick:  make(chan uuid.UUID),
 		inbound:    make(chan inboundMsg),
 		shutdown:   make(chan struct{}),
 		done:       make(chan struct{}),
@@ -128,6 +130,22 @@ func (h *Hub) Run(ctx context.Context) {
 					Msg("ws outbound queue full, dropped placeholder response")
 			}
 
+		case userID := <-h.forceKick:
+			for _, client := range h.clients {
+				if client.UserID != userID {
+					continue
+				}
+
+				select {
+				case client.Send <- mustEncode(wsMessage{Type: "force_logout"}):
+				default:
+				}
+
+				delete(h.clients, client.ID)
+				close(client.Send)
+				_ = client.Conn.Close(websocket.StatusPolicyViolation, "force_logout")
+			}
+
 		case <-idleTimerC:
 			if len(h.clients) == 0 {
 				h.log.Info().
@@ -146,6 +164,13 @@ func (h *Hub) Run(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		}
+	}
+}
+
+func (h *Hub) DisconnectUser(userID uuid.UUID) {
+	select {
+	case h.forceKick <- userID:
+	case <-h.done:
 	}
 }
 

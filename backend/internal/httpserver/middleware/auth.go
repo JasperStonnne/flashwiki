@@ -9,7 +9,6 @@ import (
 	"github.com/google/uuid"
 
 	"fpgwiki/backend/internal/config"
-	"fpgwiki/backend/internal/httpserver/handlers"
 	"fpgwiki/backend/internal/models"
 	"fpgwiki/backend/internal/repository"
 )
@@ -24,14 +23,14 @@ func RequireAuth(cfg config.Config, userRepo repository.UserRepo) gin.HandlerFun
 	return func(c *gin.Context) {
 		authorization := strings.TrimSpace(c.GetHeader("Authorization"))
 		if authorization == "" {
-			handlers.WriteErr(c, http.StatusUnauthorized, "missing_token", "authorization token is required")
+			writeErr(c, http.StatusUnauthorized, "missing_token", "authorization token is required")
 			c.Abort()
 			return
 		}
 
 		tokenString, ok := extractBearerToken(authorization)
 		if !ok {
-			handlers.WriteErr(c, http.StatusUnauthorized, "invalid_token", "authorization token is invalid")
+			writeErr(c, http.StatusUnauthorized, "invalid_token", "authorization token is invalid")
 			c.Abort()
 			return
 		}
@@ -41,32 +40,32 @@ func RequireAuth(cfg config.Config, userRepo repository.UserRepo) gin.HandlerFun
 			return []byte(cfg.JWTSecret), nil
 		})
 		if err != nil || !token.Valid {
-			handlers.WriteErr(c, http.StatusUnauthorized, "invalid_token", "authorization token is invalid")
+			writeErr(c, http.StatusUnauthorized, "invalid_token", "authorization token is invalid")
 			c.Abort()
 			return
 		}
 
 		userID, err := uuid.Parse(claims.Sub)
 		if err != nil {
-			handlers.WriteErr(c, http.StatusUnauthorized, "invalid_token", "authorization token is invalid")
+			writeErr(c, http.StatusUnauthorized, "invalid_token", "authorization token is invalid")
 			c.Abort()
 			return
 		}
 
 		user, err := userRepo.FindByID(c.Request.Context(), userID)
 		if err != nil {
-			handlers.WriteErr(c, http.StatusInternalServerError, "internal_error", "internal server error")
+			writeErr(c, http.StatusInternalServerError, "internal_error", "internal server error")
 			c.Abort()
 			return
 		}
 		if user == nil {
-			handlers.WriteErr(c, http.StatusUnauthorized, "user_not_found", "user not found")
+			writeErr(c, http.StatusUnauthorized, "user_not_found", "user not found")
 			c.Abort()
 			return
 		}
 
 		if claims.TV != user.TokenVersion {
-			handlers.WriteErr(c, http.StatusUnauthorized, "token_revoked", "authorization token has been revoked")
+			writeErr(c, http.StatusUnauthorized, "token_revoked", "authorization token has been revoked")
 			c.Abort()
 			return
 		}
@@ -88,7 +87,7 @@ func RequireRole(roles ...string) gin.HandlerFunc {
 			}
 		}
 
-		handlers.WriteErr(c, http.StatusForbidden, "forbidden", "forbidden")
+		writeErr(c, http.StatusForbidden, "forbidden", "forbidden")
 		c.Abort()
 	}
 }
@@ -167,4 +166,26 @@ func extractBearerToken(authorization string) (string, bool) {
 	}
 
 	return token, true
+}
+
+type errorResponse struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+type envelope struct {
+	Success bool           `json:"success"`
+	Data    any            `json:"data"`
+	Error   *errorResponse `json:"error"`
+}
+
+func writeErr(c *gin.Context, status int, code string, message string) {
+	c.JSON(status, envelope{
+		Success: false,
+		Data:    nil,
+		Error: &errorResponse{
+			Code:    code,
+			Message: message,
+		},
+	})
 }

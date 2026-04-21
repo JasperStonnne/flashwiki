@@ -13,7 +13,6 @@ import (
 	"nhooyr.io/websocket"
 
 	"fpgwiki/backend/internal/config"
-	"fpgwiki/backend/internal/httpserver/handlers"
 	applogger "fpgwiki/backend/internal/logger"
 )
 
@@ -33,7 +32,7 @@ func Handler(cfg config.Config, hm *HubManager, log zerolog.Logger) gin.HandlerF
 
 		subprotocol, token, ok := parseAccessSubprotocol(c.GetHeader("Sec-WebSocket-Protocol"))
 		if !ok {
-			handlers.WriteErr(c, http.StatusUnauthorized, "unauthorized", "missing or invalid websocket credentials")
+			writeErr(c, http.StatusUnauthorized, "unauthorized", "missing or invalid websocket credentials")
 			return
 		}
 		_ = token
@@ -86,13 +85,13 @@ func Handler(cfg config.Config, hm *HubManager, log zerolog.Logger) gin.HandlerF
 func parseNodeID(c *gin.Context) (uuid.UUID, bool) {
 	raw := strings.TrimSpace(c.Query("doc"))
 	if raw == "" {
-		handlers.WriteErr(c, http.StatusBadRequest, "invalid_doc", "missing doc query parameter")
+		writeErr(c, http.StatusBadRequest, "invalid_doc", "missing doc query parameter")
 		return uuid.Nil, false
 	}
 
 	nodeID, err := uuid.Parse(raw)
 	if err != nil {
-		handlers.WriteErr(c, http.StatusBadRequest, "invalid_doc", "doc query parameter must be uuid")
+		writeErr(c, http.StatusBadRequest, "invalid_doc", "doc query parameter must be uuid")
 		return uuid.Nil, false
 	}
 
@@ -179,4 +178,26 @@ func writePump(ctx context.Context, hub *Hub, client *Client, log zerolog.Logger
 			return
 		}
 	}
+}
+
+type errorResponse struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+type envelope struct {
+	Success bool           `json:"success"`
+	Data    any            `json:"data"`
+	Error   *errorResponse `json:"error"`
+}
+
+func writeErr(c *gin.Context, status int, code string, message string) {
+	c.JSON(status, envelope{
+		Success: false,
+		Data:    nil,
+		Error: &errorResponse{
+			Code:    code,
+			Message: message,
+		},
+	})
 }

@@ -65,3 +65,16 @@ func (m *HubManager) Release(nodeID uuid.UUID) {
 		Str(applogger.NodeIDField, nodeID.String()).
 		Msg("released ws hub")
 }
+
+func (m *HubManager) DisconnectUser(userID uuid.UUID) {
+	m.mu.Lock()
+	hubs := make([]*Hub, 0, len(m.hubs))
+	for _, hub := range m.hubs {
+		hubs = append(hubs, hub)
+	}
+	m.mu.Unlock()
+
+	for _, hub := range hubs {
+		hub.DisconnectUser(userID)
+	}
+}

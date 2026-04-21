@@ -6,8 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
-
-	"fpgwiki/backend/internal/httpserver/handlers"
 )
 
 func Recover(log zerolog.Logger) gin.HandlerFunc {
@@ -21,7 +19,7 @@ func Recover(log zerolog.Logger) gin.HandlerFunc {
 					Str("panic", fmt.Sprint(rec)).
 					Msg("panic recovered")
 
-				handlers.WriteErr(c, http.StatusInternalServerError, "internal_error", "internal server error")
+				writeErr(c, http.StatusInternalServerError, "internal_error", "internal server error")
 				c.Abort()
 			}
 		}()
