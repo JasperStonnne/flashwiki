@@ -28,6 +28,11 @@ type TokenResponse struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
+type UpdateUserRequest struct {
+	DisplayName *string `json:"display_name"`
+	Locale      *string `json:"locale"`
+}
+
 type JWTClaims struct {
 	Sub  string `json:"sub"`
 	Role string `json:"role"`
