@@ -1,0 +1,5 @@
+linters-settings:
+  staticcheck:
+    checks:
+      - "all"
+      - "-SA1019" # nhooyr.io/websocket deprecated; planned for M5 migration review
