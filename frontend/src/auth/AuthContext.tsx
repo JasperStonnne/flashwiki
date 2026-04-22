@@ -121,32 +121,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [accessToken])
 
-  useEffect(() => {
-    if (!accessToken) {
-      return
-    }
-
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const wsURL = `${protocol}//${window.location.host}/api/ws?token=${encodeURIComponent(accessToken)}`
-    const socket = new WebSocket(wsURL)
-
-    socket.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data) as { type?: string }
-        if (message.type === 'force_logout') {
-          clearAuthState()
-          window.location.href = '/login'
-        }
-      } catch {
-        // ignore non-json message
-      }
-    }
-
-    return () => {
-      socket.close()
-    }
-  }, [accessToken])
-
   return (
     <AuthContext.Provider
       value={{

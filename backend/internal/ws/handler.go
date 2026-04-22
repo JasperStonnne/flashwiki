@@ -3,11 +3,13 @@ package ws
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"nhooyr.io/websocket"
@@ -23,8 +25,6 @@ const (
 
 func Handler(cfg config.Config, hm *HubManager, log zerolog.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		_ = cfg
-
 		nodeID, ok := parseNodeID(c)
 		if !ok {
 			return
@@ -35,7 +35,12 @@ func Handler(cfg config.Config, hm *HubManager, log zerolog.Logger) gin.HandlerF
 			writeErr(c, http.StatusUnauthorized, "unauthorized", "missing or invalid websocket credentials")
 			return
 		}
-		_ = token
+
+		userID, err := parseUserIDFromJWT(token, cfg.JWTSecret)
+		if err != nil {
+			writeErr(c, http.StatusUnauthorized, "unauthorized", "invalid token")
+			return
+		}
 
 		conn, err := websocket.Accept(c.Writer, c.Request, &websocket.AcceptOptions{
 			Subprotocols:       []string{subprotocol},
@@ -52,7 +57,7 @@ func Handler(cfg config.Config, hm *HubManager, log zerolog.Logger) gin.HandlerF
 		hub := hm.GetOrCreate(nodeID)
 		client := &Client{
 			ID:     uuid.NewString(),
-			UserID: uuid.Nil,
+			UserID: userID,
 			Level:  "readable",
 			Conn:   conn,
 			Send:   make(chan []byte, 8),
@@ -114,6 +119,32 @@ func parseAccessSubprotocol(header string) (subprotocol string, token string, ok
 	}
 
 	return "", "", false
+}
+
+func parseUserIDFromJWT(tokenStr string, secret string) (uuid.UUID, error) {
+	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (any, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+		}
+		return []byte(secret), nil
+	})
+	if err != nil {
+		return uuid.Nil, err
+	}
+	if !token.Valid {
+		return uuid.Nil, fmt.Errorf("invalid token")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return uuid.Nil, fmt.Errorf("invalid claims")
+	}
+	sub, ok := claims["sub"].(string)
+	if !ok {
+		return uuid.Nil, fmt.Errorf("missing sub claim")
+	}
+
+	return uuid.Parse(sub)
 }
 
 func readPump(ctx context.Context, hub *Hub, client *Client, log zerolog.Logger) {
