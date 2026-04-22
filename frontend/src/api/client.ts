@@ -13,6 +13,8 @@ type AuthHandlers = {
 }
 
 const ACCESS_TOKEN_KEY = 'access_token'
+const REFRESH_TOKEN_KEY = 'refresh_token'
+const USER_ROLE_KEY = 'user_role'
 
 let authHandlers: AuthHandlers | null = null
 let refreshInFlight: Promise<boolean> | null = null
@@ -62,6 +64,8 @@ function triggerLogout() {
   }
 
   localStorage.removeItem(ACCESS_TOKEN_KEY)
+  localStorage.removeItem(REFRESH_TOKEN_KEY)
+  localStorage.removeItem(USER_ROLE_KEY)
   window.location.href = '/login'
 }
 
