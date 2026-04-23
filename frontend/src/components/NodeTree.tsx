@@ -20,6 +20,7 @@ import type {
 } from '../api/types'
 import { InlineNodeInput } from './InlineNodeInput'
 import { NodeContextMenu } from './NodeContextMenu'
+import { PermissionDialog } from './PermissionDialog'
 import './node-tree.css'
 
 const EXPANDED_NODES_KEY = 'fpgwiki_expanded_nodes'
@@ -41,6 +42,11 @@ interface ContextMenuState {
   x: number
   y: number
   node: NodeListItem | null
+}
+
+interface PermissionTarget {
+  nodeId: string
+  nodeTitle: string
 }
 
 interface NodeTreeBranchProps extends NodeTreeProps {
@@ -163,6 +169,7 @@ export function NodeTree({ parentId, depth }: NodeTreeProps) {
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null)
   const [creatingNode, setCreatingNode] = useState<CreateDraft | null>(null)
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() => readExpandedNodeIds())
+  const [permissionTarget, setPermissionTarget] = useState<PermissionTarget | null>(null)
   const [refreshMap, setRefreshMap] = useState<Record<string, number>>({})
   const [renamingNodeId, setRenamingNodeId] = useState<string | null>(null)
   const isManager = userRole === 'manager'
@@ -345,6 +352,18 @@ export function NodeTree({ parentId, depth }: NodeTreeProps) {
     void handleDeleteNode(contextMenu.node)
   }
 
+  function handleSetPermissions() {
+    if (!contextMenu?.node) {
+      return
+    }
+
+    setPermissionTarget({
+      nodeId: contextMenu.node.id,
+      nodeTitle: contextMenu.node.title,
+    })
+    closeContextMenu()
+  }
+
   return (
     <div
       className="tree-surface"
@@ -377,8 +396,16 @@ export function NodeTree({ parentId, depth }: NodeTreeProps) {
           onCreateFolder={handleCreateFolder}
           onDelete={handleDeleteFromMenu}
           onRename={handleRenameFromMenu}
+          onSetPermissions={handleSetPermissions}
           x={contextMenu.x}
           y={contextMenu.y}
+        />
+      )}
+      {permissionTarget && (
+        <PermissionDialog
+          nodeId={permissionTarget.nodeId}
+          nodeTitle={permissionTarget.nodeTitle}
+          onClose={() => setPermissionTarget(null)}
         />
       )}
     </div>

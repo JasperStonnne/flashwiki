@@ -12,6 +12,7 @@ interface NodeContextMenuProps {
   onCreateFolder: () => void
   onCreateDoc: () => void
   onRename: () => void
+  onSetPermissions: () => void
   onDelete: () => void
 }
 
@@ -54,9 +55,18 @@ export function NodeContextMenu({
   onCreateFolder,
   onDelete,
   onRename,
+  onSetPermissions,
 }: NodeContextMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null)
-  const items = buildMenuItems(node, isManager, onCreateFolder, onCreateDoc, onRename, onDelete)
+  const items = buildMenuItems(
+    node,
+    isManager,
+    onCreateFolder,
+    onCreateDoc,
+    onRename,
+    onSetPermissions,
+    onDelete,
+  )
 
   useEffect(() => {
     function handleMouseDown(event: globalThis.MouseEvent) {
@@ -119,6 +129,7 @@ function buildMenuItems(
   onCreateFolder: () => void,
   onCreateDoc: () => void,
   onRename: () => void,
+  onSetPermissions: () => void,
   onDelete: () => void,
 ): MenuItem[] {
   if (node === null) {
@@ -139,6 +150,7 @@ function buildMenuItems(
     items.push({ label: '重命名', onSelect: onRename })
   }
   if (canManage(node.permission)) {
+    items.push({ label: '设置权限', onSelect: onSetPermissions })
     items.push({ danger: true, label: '删除', onSelect: onDelete })
   }
 
