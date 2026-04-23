@@ -1,18 +1,39 @@
+import { Link, Outlet } from 'react-router-dom'
+
 import { useAuth } from '../auth/AuthContext'
-import { Outlet } from 'react-router-dom'
+import { Sidebar } from '../components/Sidebar'
+import './main-shell.css'
 
 export function MainShell() {
-  const { logout } = useAuth()
+  const { logout, userRole } = useAuth()
 
   return (
-    <div>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Main Shell TopBar</h1>
-        <button type="button" onClick={logout}>
-          退出登录
-        </button>
+    <div className="main-shell">
+      <header className="topbar">
+        <span className="topbar-brand">FPGWiki</span>
+        <div className="topbar-actions">
+          <span className="topbar-avatar" aria-hidden="true" />
+          <button className="topbar-logout" type="button" onClick={logout}>
+            退出登录
+          </button>
+        </div>
       </header>
-      <Outlet />
+      <div className="main-body">
+        <aside className="sidebar">
+          <Sidebar />
+          {userRole === 'manager' && (
+            <Link className="sidebar-admin-link" to="/admin/users">
+              <span className="sidebar-admin-icon" aria-hidden="true">
+                ⚙
+              </span>
+              <span>管理后台</span>
+            </Link>
+          )}
+        </aside>
+        <main className="content">
+          <Outlet />
+        </main>
+      </div>
     </div>
   )
 }
