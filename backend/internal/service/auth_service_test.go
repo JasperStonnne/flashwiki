@@ -21,9 +21,11 @@ type mockUserRepo struct {
 	createUserFn             func(ctx context.Context, user *models.User) error
 	findByEmailFn            func(ctx context.Context, email string) (*models.User, error)
 	findByIDFn               func(ctx context.Context, id uuid.UUID) (*models.User, error)
+	listAllFn                func(ctx context.Context) ([]*models.User, error)
 	updatePasswordHashFn     func(ctx context.Context, id uuid.UUID, hash string) error
 	incrementTokenVersionFn  func(ctx context.Context, id uuid.UUID) error
 	updateUserFn             func(ctx context.Context, user *models.User) error
+	updateRoleFn             func(ctx context.Context, id uuid.UUID, role string) error
 	incrementTokenVersionHit int
 }
 
@@ -48,11 +50,25 @@ func (m *mockUserRepo) FindByID(ctx context.Context, id uuid.UUID) (*models.User
 	return m.findByIDFn(ctx, id)
 }
 
+func (m *mockUserRepo) ListAll(ctx context.Context) ([]*models.User, error) {
+	if m.listAllFn == nil {
+		return nil, errors.New("unexpected ListAll call")
+	}
+	return m.listAllFn(ctx)
+}
+
 func (m *mockUserRepo) UpdateUser(ctx context.Context, user *models.User) error {
 	if m.updateUserFn == nil {
 		return nil
 	}
 	return m.updateUserFn(ctx, user)
+}
+
+func (m *mockUserRepo) UpdateRole(ctx context.Context, id uuid.UUID, role string) error {
+	if m.updateRoleFn == nil {
+		return errors.New("unexpected UpdateRole call")
+	}
+	return m.updateRoleFn(ctx, id, role)
 }
 
 func (m *mockUserRepo) UpdatePasswordHash(ctx context.Context, id uuid.UUID, hash string) error {

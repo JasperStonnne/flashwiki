@@ -44,8 +44,16 @@ func (m *mockUserRepoForMiddleware) FindByID(ctx context.Context, id uuid.UUID) 
 	return m.findByIDFn(ctx, id)
 }
 
+func (m *mockUserRepoForMiddleware) ListAll(ctx context.Context) ([]*models.User, error) {
+	return nil, errors.New("unexpected ListAll call")
+}
+
 func (m *mockUserRepoForMiddleware) UpdateUser(ctx context.Context, user *models.User) error {
 	return errors.New("unexpected UpdateUser call")
+}
+
+func (m *mockUserRepoForMiddleware) UpdateRole(ctx context.Context, id uuid.UUID, role string) error {
+	return errors.New("unexpected UpdateRole call")
 }
 
 func (m *mockUserRepoForMiddleware) UpdatePasswordHash(ctx context.Context, id uuid.UUID, hash string) error {

@@ -20,8 +20,10 @@ import (
 )
 
 type userHandlerMockUserService struct {
-	getByIDFn func(ctx context.Context, userID uuid.UUID) (*models.User, error)
-	updateFn  func(ctx context.Context, userID uuid.UUID, req models.UpdateUserRequest) (*models.User, error)
+	getByIDFn    func(ctx context.Context, userID uuid.UUID) (*models.User, error)
+	listAllFn    func(ctx context.Context) ([]*models.User, error)
+	updateFn     func(ctx context.Context, userID uuid.UUID, req models.UpdateUserRequest) (*models.User, error)
+	changeRoleFn func(ctx context.Context, callerID uuid.UUID, targetID uuid.UUID, newRole string) (*models.User, error)
 }
 
 func (m *userHandlerMockUserService) GetByID(ctx context.Context, userID uuid.UUID) (*models.User, error) {
@@ -31,11 +33,30 @@ func (m *userHandlerMockUserService) GetByID(ctx context.Context, userID uuid.UU
 	return m.getByIDFn(ctx, userID)
 }
 
+func (m *userHandlerMockUserService) ListAll(ctx context.Context) ([]*models.User, error) {
+	if m.listAllFn == nil {
+		return nil, errors.New("unexpected ListAll call")
+	}
+	return m.listAllFn(ctx)
+}
+
 func (m *userHandlerMockUserService) Update(ctx context.Context, userID uuid.UUID, req models.UpdateUserRequest) (*models.User, error) {
 	if m.updateFn == nil {
 		return nil, errors.New("unexpected Update call")
 	}
 	return m.updateFn(ctx, userID, req)
+}
+
+func (m *userHandlerMockUserService) ChangeRole(
+	ctx context.Context,
+	callerID uuid.UUID,
+	targetID uuid.UUID,
+	newRole string,
+) (*models.User, error) {
+	if m.changeRoleFn == nil {
+		return nil, errors.New("unexpected ChangeRole call")
+	}
+	return m.changeRoleFn(ctx, callerID, targetID, newRole)
 }
 
 type userHandlerMockAuthService struct {

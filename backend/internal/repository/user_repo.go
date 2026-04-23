@@ -16,7 +16,9 @@ type UserRepo interface {
 	CreateUser(ctx context.Context, user *models.User) error
 	FindByEmail(ctx context.Context, email string) (*models.User, error)
 	FindByID(ctx context.Context, id uuid.UUID) (*models.User, error)
+	ListAll(ctx context.Context) ([]*models.User, error)
 	UpdateUser(ctx context.Context, user *models.User) error
+	UpdateRole(ctx context.Context, id uuid.UUID, role string) error
 	UpdatePasswordHash(ctx context.Context, id uuid.UUID, hash string) error
 	IncrementTokenVersion(ctx context.Context, id uuid.UUID) error
 }
@@ -123,6 +125,42 @@ WHERE id = $1
 	return user, nil
 }
 
+func (r *userRepo) ListAll(ctx context.Context) ([]*models.User, error) {
+	const query = `
+SELECT id, email, display_name, role, locale, created_at, updated_at
+FROM users
+ORDER BY created_at ASC
+`
+
+	rows, err := r.pool.Query(ctx, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list users: %w", err)
+	}
+	defer rows.Close()
+
+	users := make([]*models.User, 0)
+	for rows.Next() {
+		user := &models.User{}
+		if err := rows.Scan(
+			&user.ID,
+			&user.Email,
+			&user.DisplayName,
+			&user.Role,
+			&user.Locale,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+		); err != nil {
+			return nil, fmt.Errorf("failed to list users: %w", err)
+		}
+		users = append(users, user)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("failed to list users: %w", err)
+	}
+
+	return users, nil
+}
+
 func (r *userRepo) UpdateUser(ctx context.Context, user *models.User) error {
 	if user == nil {
 		return fmt.Errorf("failed to update user: %w", errors.New("user is nil"))
@@ -137,6 +175,24 @@ RETURNING updated_at
 
 	if err := r.pool.QueryRow(ctx, query, user.ID, user.DisplayName, user.Locale).Scan(&user.UpdatedAt); err != nil {
 		return fmt.Errorf("failed to update user: %w", err)
+	}
+
+	return nil
+}
+
+func (r *userRepo) UpdateRole(ctx context.Context, id uuid.UUID, role string) error {
+	const query = `
+UPDATE users
+SET role = $1, updated_at = now()
+WHERE id = $2
+`
+
+	tag, err := r.pool.Exec(ctx, query, role, id)
+	if err != nil {
+		return fmt.Errorf("failed to update user role: %w", err)
+	}
+	if tag.RowsAffected() == 0 {
+		return fmt.Errorf("failed to update user role: %w", pgx.ErrNoRows)
 	}
 
 	return nil

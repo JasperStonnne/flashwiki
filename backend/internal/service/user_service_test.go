@@ -12,8 +12,11 @@ import (
 )
 
 type mockUserRepoForUserService struct {
-	findByIDFn   func(ctx context.Context, id uuid.UUID) (*models.User, error)
-	updateUserFn func(ctx context.Context, user *models.User) error
+	findByIDFn              func(ctx context.Context, id uuid.UUID) (*models.User, error)
+	listAllFn               func(ctx context.Context) ([]*models.User, error)
+	updateUserFn            func(ctx context.Context, user *models.User) error
+	updateRoleFn            func(ctx context.Context, id uuid.UUID, role string) error
+	incrementTokenVersionFn func(ctx context.Context, id uuid.UUID) error
 }
 
 func (m *mockUserRepoForUserService) CreateUser(ctx context.Context, user *models.User) error {
@@ -31,6 +34,13 @@ func (m *mockUserRepoForUserService) FindByID(ctx context.Context, id uuid.UUID)
 	return m.findByIDFn(ctx, id)
 }
 
+func (m *mockUserRepoForUserService) ListAll(ctx context.Context) ([]*models.User, error) {
+	if m.listAllFn == nil {
+		return nil, errors.New("unexpected ListAll call")
+	}
+	return m.listAllFn(ctx)
+}
+
 func (m *mockUserRepoForUserService) UpdateUser(ctx context.Context, user *models.User) error {
 	if m.updateUserFn == nil {
 		return errors.New("unexpected UpdateUser call")
@@ -38,12 +48,22 @@ func (m *mockUserRepoForUserService) UpdateUser(ctx context.Context, user *model
 	return m.updateUserFn(ctx, user)
 }
 
+func (m *mockUserRepoForUserService) UpdateRole(ctx context.Context, id uuid.UUID, role string) error {
+	if m.updateRoleFn == nil {
+		return errors.New("unexpected UpdateRole call")
+	}
+	return m.updateRoleFn(ctx, id, role)
+}
+
 func (m *mockUserRepoForUserService) UpdatePasswordHash(ctx context.Context, id uuid.UUID, hash string) error {
 	return errors.New("unexpected UpdatePasswordHash call")
 }
 
 func (m *mockUserRepoForUserService) IncrementTokenVersion(ctx context.Context, id uuid.UUID) error {
-	return errors.New("unexpected IncrementTokenVersion call")
+	if m.incrementTokenVersionFn == nil {
+		return errors.New("unexpected IncrementTokenVersion call")
+	}
+	return m.incrementTokenVersionFn(ctx, id)
 }
 
 func TestUserServiceGetByIDSuccess(t *testing.T) {
