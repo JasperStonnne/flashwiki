@@ -1,0 +1,216 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 50%, #fef3c7 100%);
+}
+
+.login-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px;
+}
+
+.login-left h1 {
+  font: 700 48px var(--font-cn);
+  color: var(--gray-900);
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+
+.login-left h1 span {
+  color: var(--primary);
+}
+
+.login-left p {
+  font: 400 16px/1.7 var(--font-cn);
+  color: var(--gray-500);
+  max-width: 380px;
+}
+
+.login-features {
+  display: flex;
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.login-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 400 14px var(--font-cn);
+  color: var(--gray-600);
+}
+
+.login-feature .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.login-right {
+  width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow-lg);
+  animation: login-card-in 0.4s ease;
+}
+
+@keyframes login-card-in {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.login-card-head {
+  margin-bottom: 32px;
+}
+
+.login-card-head .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 20px var(--font-ui);
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.login-card-head .logo .icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary), var(--green));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.login-card-head p {
+  font: 400 14px var(--font-cn);
+  color: var(--gray-400);
+}
+
+.tabs-pill {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  margin-bottom: 28px;
+}
+
+.tabs-pill button {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 10px 0;
+  font: 500 14px var(--font-cn);
+  color: var(--gray-400);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.tabs-pill button.active {
+  background: var(--white);
+  color: var(--gray-800);
+  box-shadow: var(--shadow-xs);
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font: 500 13px var(--font-cn);
+  color: var(--gray-600);
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--gray-200);
+  background: var(--white);
+  font: 400 14px var(--font-cn);
+  color: var(--gray-800);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: var(--transition);
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-bg);
+}
+
+.form-group input::placeholder {
+  color: var(--gray-300);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  font: 600 14px var(--font-cn);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 4px;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+}
+
+.login-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+}
+
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+  font: 400 13px var(--font-cn);
+  color: var(--gray-400);
+}
+
+.login-footer a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.form-error {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--rose-bg);
+  color: var(--rose);
+  font: 400 13px/1.5 var(--font-cn);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}

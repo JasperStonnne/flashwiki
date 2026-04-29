@@ -1,3 +1,5 @@
+import { LoginPage } from './LoginPage'
+
 export function RegisterPage() {
-  return <h1>Register Page</h1>
+  return <LoginPage defaultTab="register" />
 }
