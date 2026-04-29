@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FPGWiki · 方向B · 清晨（完整版）</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+:root {
+  --white: #ffffff;
+  --gray-50: #f8fafb;
+  --gray-100: #f0f3f5;
+  --gray-200: #e2e7eb;
+  --gray-300: #c9d1d8;
+  --gray-400: #9aa5b0;
+  --gray-500: #6b7a87;
+  --gray-600: #4a5968;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+  --primary: #0ea5e9;
+  --primary-dark: #0284c7;
+  --primary-light: #e0f2fe;
+  --primary-bg: rgba(14,165,233,0.06);
+  --green: #10b981;
+  --green-light: #d1fae5;
+  --green-bg: rgba(16,185,129,0.08);
+  --orange: #f59e0b;
+  --orange-light: #fef3c7;
+  --orange-bg: rgba(245,158,11,0.08);
+  --rose: #f43f5e;
+  --rose-light: #ffe4e6;
+  --rose-bg: rgba(244,63,94,0.06);
+  --purple: #8b5cf6;
+  --purple-bg: rgba(139,92,246,0.08);
+  --font-cn: 'LXGW WenKai', serif;
+  --font-ui: 'DM Sans', sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
+  --transition: 0.18s ease;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--font-ui); background: var(--gray-50); color: var(--gray-800); -webkit-font-smoothing: antialiased; }
+
+/* ===== PAGE SWITCHER ===== */
+.page-switcher {
+  position: fixed; top: 16px; right: 16px; z-index: 9999;
+  display: flex; gap: 4px; background: var(--gray-900); padding: 4px; border-radius: var(--radius-full);
+  flex-wrap: wrap;
+}
+.page-switcher button {
+  border: none; background: transparent; color: var(--gray-400);
+  font: 500 11px var(--font-ui); padding: 6px 12px; border-radius: var(--radius-full); cursor: pointer;
+  transition: var(--transition); white-space: nowrap;
+}
+.page-switcher button.active { background: var(--primary); color: #fff; }
+.page-switcher button:hover:not(.active) { color: #fff; }
+
+.page { display: none; }
+.page.active { display: block; }
+
+/* ===== LOGIN ===== */
+.login-page {
+  min-height: 100vh; display: flex;
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 50%, #fef3c7 100%);
+}
+.login-left {
+  flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 80px;
+}
+.login-left h1 {
+  font: 700 48px var(--font-cn); color: var(--gray-900); line-height: 1.3; margin-bottom: 16px;
+}
+.login-left h1 span { color: var(--primary); }
+.login-left p { font: 400 16px/1.7 var(--font-cn); color: var(--gray-500); max-width: 380px; }
+.login-features { display: flex; gap: 24px; margin-top: 40px; }
+.login-feature { display: flex; align-items: center; gap: 10px; font: 400 14px var(--font-cn); color: var(--gray-600); }
+.login-feature .dot { width: 8px; height: 8px; border-radius: 50%; }
+.login-right { width: 480px; display: flex; align-items: center; justify-content: center; padding: 40px; }
+.login-card {
+  width: 100%; max-width: 380px; background: var(--white);
+  border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-lg);
+}
+.login-card-head { margin-bottom: 32px; }
+.login-card-head .logo {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 700 20px var(--font-ui); color: var(--gray-900); margin-bottom: 8px;
+}
+.login-card-head .logo .icon-box {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary), var(--green));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 16px; font-weight: 700;
+}
+.login-card-head p { font: 400 14px var(--font-cn); color: var(--gray-400); }
+.tabs-pill {
+  display: flex; background: var(--gray-100); border-radius: var(--radius-full); padding: 3px; margin-bottom: 28px;
+}
+.tabs-pill button {
+  flex: 1; border: none; background: none; padding: 10px 0;
+  font: 500 14px var(--font-cn); color: var(--gray-400);
+  border-radius: var(--radius-full); cursor: pointer; transition: var(--transition);
+}
+.tabs-pill button.active { background: var(--white); color: var(--gray-800); box-shadow: var(--shadow-xs); }
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; font: 500 13px var(--font-cn); color: var(--gray-600); margin-bottom: 6px; }
+.form-group input, .form-group select {
+  width: 100%; padding: 11px 14px; border: 1.5px solid var(--gray-200);
+  background: var(--white); font: 400 14px var(--font-cn);
+  color: var(--gray-800); border-radius: var(--radius-md); outline: none; transition: var(--transition);
+}
+.form-group input:focus, .form-group select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-bg); }
+.form-group input::placeholder { color: var(--gray-300); }
+.login-btn {
+  width: 100%; padding: 12px; border: none;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; font: 600 14px var(--font-cn);
+  border-radius: var(--radius-md); cursor: pointer; transition: var(--transition); margin-top: 4px;
+  box-shadow: 0 2px 8px rgba(14,165,233,0.3);
+}
+.login-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(14,165,233,0.4); }
+.login-footer { text-align: center; margin-top: 20px; font: 400 13px var(--font-cn); color: var(--gray-400); }
+.login-footer a { color: var(--primary); text-decoration: none; }
+
+/* ===== SHARED APP LAYOUT ===== */
+.app-layout {
+  display: grid; grid-template-columns: 256px 1fr;
+  grid-template-rows: 56px 1fr; height: 100vh;
+}
+.topbar {
+  grid-column: 1 / -1; display: flex; align-items: center;
+  padding: 0 24px; background: var(--white);
+  border-bottom: 1px solid var(--gray-200); gap: 16px;
+}
+.topbar-brand {
+  display: flex; align-items: center; gap: 8px;
+  font: 700 17px var(--font-ui); color: var(--gray-900); white-space: nowrap;
+}
+.topbar-brand .icon-box {
+  width: 28px; height: 28px; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary), var(--green));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font: 700 13px var(--font-ui);
+}
+.topbar-search { flex: 1; max-width: 460px; position: relative; margin: 0 auto; }
+.topbar-search input {
+  width: 100%; padding: 9px 16px 9px 38px;
+  border: 1.5px solid var(--gray-200); background: var(--gray-50);
+  font: 400 13px var(--font-cn); border-radius: var(--radius-full); outline: none; transition: var(--transition);
+}
+.topbar-search input:focus { border-color: var(--primary); background: var(--white); }
+.topbar-search .s-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 14px; }
+.topbar-search .shortcut {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: var(--gray-100); padding: 2px 8px; border-radius: 4px;
+  font: 500 11px var(--font-ui); color: var(--gray-400);
+}
+.topbar-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.topbar-icon-btn {
+  position: relative; width: 36px; height: 36px; border-radius: var(--radius-md);
+  background: none; border: none; cursor: pointer; font-size: 17px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-500); transition: var(--transition);
+}
+.topbar-icon-btn:hover { background: var(--gray-100); color: var(--gray-700); }
+.topbar-icon-btn .dot {
+  position: absolute; top: 6px; right: 6px; width: 8px; height: 8px;
+  background: var(--rose); border-radius: 50%; border: 2px solid var(--white);
+}
+.avatar {
+  width: 34px; height: 34px; border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), var(--green));
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  font: 600 13px var(--font-ui); cursor: pointer;
+}
+
+/* Sidebar */
+.sidebar {
+  background: var(--white); border-right: 1px solid var(--gray-200);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.sidebar-top { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.sidebar-workspace {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+  border-radius: var(--radius-md); cursor: pointer; transition: var(--transition);
+}
+.sidebar-workspace:hover { background: var(--gray-50); }
+.sidebar-workspace .ws-icon {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  background: var(--primary-light); color: var(--primary);
+  display: flex; align-items: center; justify-content: center; font: 700 14px var(--font-ui);
+}
+.sidebar-workspace .ws-info h4 { font: 600 13px var(--font-ui); color: var(--gray-800); }
+.sidebar-workspace .ws-info p { font: 400 11px var(--font-cn); color: var(--gray-400); }
+.new-doc-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; padding: 9px; border: 1.5px dashed var(--gray-300);
+  background: none; border-radius: var(--radius-md);
+  font: 500 13px var(--font-cn); color: var(--gray-500);
+  cursor: pointer; transition: var(--transition);
+}
+.new-doc-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-bg); }
+
+.tree { flex: 1; overflow-y: auto; padding: 8px 8px 16px; }
+.tree-section-label {
+  font: 600 11px var(--font-ui); color: var(--gray-400); letter-spacing: 0.5px;
+  text-transform: uppercase; padding: 12px 12px 6px;
+}
+.tree-item {
+  display: flex; align-items: center; gap: 8px; padding: 7px 12px;
+  border-radius: var(--radius-sm); cursor: pointer;
+  font: 400 13px var(--font-cn); color: var(--gray-600);
+  transition: var(--transition); user-select: none;
+}
+.tree-item:hover { background: var(--gray-50); color: var(--gray-800); }
+.tree-item.active { background: var(--primary-bg); color: var(--primary); font-weight: 500; }
+.tree-item .icon { font-size: 15px; opacity: 0.7; }
+.tree-item.active .icon { opacity: 1; }
+.tree-children { padding-left: 20px; }
+
+/* Sidebar bottom admin entry */
+.sidebar-bottom {
+  border-top: 1px solid var(--gray-200); padding: 12px 16px;
+}
+.admin-entry {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  border-radius: var(--radius-sm); cursor: pointer;
+  font: 500 13px var(--font-cn); color: var(--gray-500);
+  transition: var(--transition);
+}
+.admin-entry:hover { background: var(--gray-50); color: var(--gray-800); }
+.admin-entry.active { background: var(--primary-bg); color: var(--primary); }
+.admin-entry .icon { font-size: 16px; }
+
+/* ===== MAIN CONTENT AREA ===== */
+.main-content {
+  background: var(--gray-50); overflow-y: auto; display: flex; flex-direction: column;
+}
+
+/* Editor topbar */
+.editor-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 32px; background: var(--white);
+  border-bottom: 1px solid var(--gray-100); flex-shrink: 0;
+}
+.editor-breadcrumb { font: 400 13px var(--font-cn); color: var(--gray-400); display: flex; align-items: center; gap: 6px; }
+.editor-breadcrumb .current { color: var(--gray-700); font-weight: 500; }
+.editor-breadcrumb .sep { color: var(--gray-300); }
+.editor-collab { display: flex; align-items: center; gap: 12px; }
+.collab-avatars { display: flex; }
+.collab-avatars .c-avatar {
+  width: 26px; height: 26px; border-radius: var(--radius-sm);
+  border: 2px solid var(--white); margin-left: -6px;
+  display: flex; align-items: center; justify-content: center;
+  font: 600 10px var(--font-ui); color: #fff;
+}
+.collab-avatars .c-avatar:first-child { margin-left: 0; }
+.online-badge { display: flex; align-items: center; gap: 4px; font: 400 12px var(--font-cn); color: var(--gray-400); }
+.online-badge .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+.history-btn {
+  background: var(--white); border: 1.5px solid var(--gray-200); padding: 6px 14px;
+  font: 500 12px var(--font-cn); color: var(--gray-500);
+  border-radius: var(--radius-full); cursor: pointer; transition: var(--transition);
+}
+.history-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+/* Editor paper */
+.editor-wrapper { flex: 1; display: flex; justify-content: center; padding: 32px; }
+.editor-paper {
+  width: 100%; max-width: 740px; background: var(--white);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+  padding: 48px 56px 80px; border: 1px solid var(--gray-100);
+}
+.editor-title { font: 700 30px var(--font-cn); color: var(--gray-900); margin-bottom: 6px; line-height: 1.4; }
+.editor-meta {
+  font: 400 12px var(--font-cn); color: var(--gray-400);
+  margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--gray-100);
+}
+.editor-toolbar {
+  display: flex; gap: 2px; padding: 6px 8px; margin-bottom: 24px;
+  background: var(--gray-50); border-radius: var(--radius-md); border: 1px solid var(--gray-100);
+}
+.toolbar-btn {
+  background: none; border: none; padding: 7px 10px;
+  font: 500 13px var(--font-ui); color: var(--gray-400);
+  cursor: pointer; border-radius: var(--radius-sm); transition: var(--transition);
+}
+.toolbar-btn:hover { background: var(--white); color: var(--gray-700); }
+.toolbar-btn.active { background: var(--primary-bg); color: var(--primary); }
+.toolbar-divider { width: 1px; background: var(--gray-200); margin: 4px 4px; }
+
+.editor-body { font: 400 15px/1.9 var(--font-cn); color: var(--gray-700); }
+.editor-body h2 { font: 700 20px var(--font-cn); color: var(--gray-800); margin: 28px 0 12px; }
+.editor-body p { margin-bottom: 14px; }
+.editor-body strong { color: var(--gray-900); }
+.editor-body .collab-cursor { border-left: 2px solid var(--green); position: relative; }
+.editor-body .collab-cursor::after {
+  content: '李明'; position: absolute; top: -20px; left: -1px;
+  background: var(--green); color: #fff;
+  font: 500 10px var(--font-cn); padding: 2px 8px;
+  border-radius: var(--radius-sm); white-space: nowrap;
+}
+.editor-body .highlight { background: rgba(16,185,129,0.1); border-radius: 3px; padding: 0 3px; }
+.editor-body code {
+  background: var(--gray-100); padding: 2px 7px; border-radius: 4px;
+  font-size: 13px; color: var(--primary-dark); font-family: 'Menlo', monospace;
+}
+.editor-body blockquote {
+  border-left: 3px solid var(--primary); padding: 10px 18px; margin: 16px 0;
+  background: var(--primary-bg); color: var(--gray-600);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.editor-body ul { padding-left: 22px; margin-bottom: 14px; }
+.editor-body li { margin-bottom: 6px; }
+
+/* ===== PERMISSION MODAL OVERLAY ===== */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(15,23,42,0.45); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.perm-modal {
+  width: 560px; background: var(--white); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl); overflow: hidden;
+  animation: modalIn 0.25s ease;
+}
+@keyframes modalIn { from { opacity:0; transform: scale(0.96) translateY(8px); } to { opacity:1; transform: scale(1) translateY(0); } }
+
+.perm-modal-header {
+  padding: 24px 28px 16px; border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.perm-modal-header .node-info {
+  display: flex; align-items: center; gap: 10px;
+}
+.perm-modal-header .node-icon {
+  width: 36px; height: 36px; border-radius: var(--radius-sm);
+  background: var(--primary-light); color: var(--primary);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.perm-modal-header .node-name { font: 600 16px var(--font-cn); color: var(--gray-900); }
+.perm-modal-header .node-type { font: 400 12px var(--font-cn); color: var(--gray-400); }
+.perm-modal-header .close-btn {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  background: none; border: none; cursor: pointer; font-size: 18px;
+  color: var(--gray-400); display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+}
+.perm-modal-header .close-btn:hover { background: var(--gray-100); color: var(--gray-700); }
+
+.inherit-banner {
+  margin: 16px 28px 0; padding: 12px 16px;
+  background: var(--orange-bg); border: 1px solid rgba(245,158,11,0.2);
+  border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;
+}
+.inherit-banner .inherit-text {
+  font: 400 13px var(--font-cn); color: var(--gray-700);
+}
+.inherit-banner .inherit-text strong { color: var(--orange); }
+.inherit-banner .unlink-btn {
+  border: 1.5px solid var(--orange); background: none;
+  padding: 5px 14px; border-radius: var(--radius-full);
+  font: 500 12px var(--font-cn); color: var(--orange);
+  cursor: pointer; transition: var(--transition); white-space: nowrap;
+}
+.inherit-banner .unlink-btn:hover { background: var(--orange); color: var(--white); }
+
+.perm-modal-body { padding: 20px 28px; }
+
+.perm-table { width: 100%; border-collapse: collapse; }
+.perm-table th {
+  text-align: left; font: 600 11px var(--font-ui); color: var(--gray-400);
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 0 8px 10px;
+}
+.perm-table td { padding: 10px 8px; border-top: 1px solid var(--gray-100); vertical-align: middle; }
+.perm-table tr:first-child td { border-top: none; }
+
+.perm-row-none { background: var(--gray-50); }
+.perm-row-none td { color: var(--gray-400); }
+
+.perm-user-cell {
+  display: flex; align-items: center; gap: 10px;
+}
+.perm-user-avatar {
+  width: 30px; height: 30px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font: 600 11px var(--font-ui); color: #fff; flex-shrink: 0;
+}
+.perm-user-name { font: 500 13px var(--font-cn); color: var(--gray-800); }
+.perm-row-none .perm-user-name { color: var(--gray-400); text-decoration: line-through; }
+
+.perm-type-tag {
+  display: inline-flex; padding: 2px 10px; border-radius: var(--radius-full);
+  font: 500 11px var(--font-cn);
+}
+.perm-type-tag.personal { background: var(--primary-bg); color: var(--primary); }
+.perm-type-tag.group { background: var(--purple-bg); color: var(--purple); }
+
+.perm-select {
+  padding: 6px 10px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm);
+  font: 400 13px var(--font-cn); color: var(--gray-700); background: var(--white);
+  outline: none; cursor: pointer; transition: var(--transition); min-width: 110px;
+}
+.perm-select:focus { border-color: var(--primary); }
+.perm-select.level-manage { border-color: var(--primary); color: var(--primary); font-weight: 500; }
+.perm-select.level-edit { border-color: var(--green); color: var(--green); font-weight: 500; }
+.perm-select.level-readable { border-color: var(--orange); color: var(--orange); font-weight: 500; }
+.perm-select.level-none { border-color: var(--gray-300); color: var(--gray-400); background: var(--gray-50); }
+
+.perm-delete-btn {
+  width: 28px; height: 28px; border-radius: var(--radius-sm);
+  background: none; border: none; cursor: pointer; font-size: 14px;
+  color: var(--gray-300); display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+}
+.perm-delete-btn:hover { background: var(--rose-bg); color: var(--rose); }
+
+.perm-modal-footer {
+  padding: 16px 28px 24px; display: flex; align-items: center; justify-content: space-between;
+}
+.add-perm-btn {
+  display: flex; align-items: center; gap: 6px;
+  border: 1.5px dashed var(--gray-300); background: none; padding: 8px 16px;
+  border-radius: var(--radius-full); font: 500 13px var(--font-cn); color: var(--gray-500);
+  cursor: pointer; transition: var(--transition);
+}
+.add-perm-btn:hover { border-color: var(--primary); color: var(--primary); }
+.perm-actions { display: flex; gap: 10px; }
+.btn-cancel {
+  padding: 9px 20px; border: 1.5px solid var(--gray-200); background: var(--white);
+  border-radius: var(--radius-md); font: 500 13px var(--font-cn); color: var(--gray-600);
+  cursor: pointer; transition: var(--transition);
+}
+.btn-cancel:hover { border-color: var(--gray-400); }
+.btn-save {
+  padding: 9px 24px; border: none;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius: var(--radius-md); font: 600 13px var(--font-cn); color: #fff;
+  cursor: pointer; transition: var(--transition);
+  box-shadow: 0 2px 8px rgba(14,165,233,0.25);
+}
+.btn-save:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(14,165,233,0.35); }
+
+/* ===== ADMIN PAGE ===== */
+.admin-content { flex: 1; padding: 28px 32px; overflow-y: auto; }
+.admin-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.admin-header h2 { font: 700 22px var(--font-cn); color: var(--gray-900); }
+
+/* Admin tabs */
+.admin-tabs {
+  display: flex; gap: 4px; background: var(--gray-100); padding: 3px;
+  border-radius: var(--radius-full); margin-bottom: 24px; width: fit-content;
+}
+.admin-tabs button {
+  border: none; background: none; padding: 9px 20px;
+  font: 500 13px var(--font-cn); color: var(--gray-400);
+  border-radius: var(--radius-full); cursor: pointer; transition: var(--transition);
+}
+.admin-tabs button.active { background: var(--white); color: var(--gray-800); box-shadow: var(--shadow-xs); }
+.admin-tabs button:hover:not(.active) { color: var(--gray-600); }
+
+.admin-tab-content { display: none; }
+.admin-tab-content.active { display: block; }
+
+/* User table */
+.data-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  background: var(--white); border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100); overflow: hidden;
+}
+.data-table th {
+  text-align: left; font: 600 11px var(--font-ui); color: var(--gray-400);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 14px 16px; background: var(--gray-50); border-bottom: 1px solid var(--gray-100);
+}
+.data-table td {
+  padding: 14px 16px; border-bottom: 1px solid var(--gray-100);
+  font: 400 13px var(--font-cn); color: var(--gray-700); vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--gray-50); }
+
+.user-cell { display: flex; align-items: center; gap: 10px; }
+.user-cell .u-avatar {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font: 600 12px var(--font-ui); color: #fff; flex-shrink: 0;
+}
+.user-cell .u-name { font: 500 13px var(--font-cn); color: var(--gray-800); }
+
+.role-tag {
+  display: inline-flex; padding: 3px 10px; border-radius: var(--radius-full);
+  font: 500 11px var(--font-cn);
+}
+.role-tag.manager { background: var(--primary-bg); color: var(--primary); }
+.role-tag.leader { background: var(--green-bg); color: var(--green); }
+.role-tag.member { background: var(--gray-100); color: var(--gray-500); }
+
+.status-dot {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: 400 12px var(--font-cn);
+}
+.status-dot::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%;
+}
+.status-dot.online::before { background: var(--green); }
+.status-dot.online { color: var(--green); }
+.status-dot.offline::before { background: var(--gray-300); }
+.status-dot.offline { color: var(--gray-400); }
+
+.role-select {
+  padding: 5px 10px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm);
+  font: 400 12px var(--font-cn); color: var(--gray-700); background: var(--white);
+  outline: none; cursor: pointer;
+}
+.force-offline-btn {
+  padding: 5px 12px; border: 1.5px solid var(--rose); background: none;
+  border-radius: var(--radius-sm); font: 500 11px var(--font-cn); color: var(--rose);
+  cursor: pointer; transition: var(--transition); white-space: nowrap;
+}
+.force-offline-btn:hover { background: var(--rose); color: var(--white); }
+.action-cell { display: flex; align-items: center; gap: 8px; }
+
+/* Group cards */
+.group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.group-card {
+  background: var(--white); border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg); padding: 20px; transition: var(--transition);
+}
+.group-card:hover { border-color: var(--gray-200); box-shadow: var(--shadow-sm); }
+.group-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.group-card-header h4 { font: 600 15px var(--font-cn); color: var(--gray-900); }
+.group-card-actions { display: flex; gap: 6px; }
+.group-card-actions button {
+  width: 28px; height: 28px; border-radius: var(--radius-sm);
+  background: none; border: 1px solid var(--gray-200); cursor: pointer;
+  font-size: 13px; display: flex; align-items: center; justify-content: center;
+  color: var(--gray-400); transition: var(--transition);
+}
+.group-card-actions button:hover { border-color: var(--primary); color: var(--primary); }
+.group-card-actions button.delete-btn:hover { border-color: var(--rose); color: var(--rose); }
+.group-meta { display: flex; gap: 16px; margin-bottom: 14px; }
+.group-meta-item { font: 400 12px var(--font-cn); color: var(--gray-400); }
+.group-meta-item strong { color: var(--gray-700); font-weight: 500; }
+.group-members { display: flex; gap: -4px; align-items: center; }
+.group-members .gm-avatar {
+  width: 26px; height: 26px; border-radius: var(--radius-sm);
+  border: 2px solid var(--white); margin-left: -5px;
+  display: flex; align-items: center; justify-content: center;
+  font: 600 9px var(--font-ui); color: #fff;
+}
+.group-members .gm-avatar:first-child { margin-left: 0; }
+.group-members .gm-more {
+  width: 26px; height: 26px; border-radius: var(--radius-sm);
+  border: 2px solid var(--white); margin-left: -5px;
+  background: var(--gray-100); display: flex; align-items: center; justify-content: center;
+  font: 600 9px var(--font-ui); color: var(--gray-400);
+}
+.new-group-card {
+  background: var(--gray-50); border: 1.5px dashed var(--gray-300);
+  border-radius: var(--radius-lg); padding: 20px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 140px; cursor: pointer; transition: var(--transition);
+  gap: 8px;
+}
+.new-group-card:hover { border-color: var(--primary); background: var(--primary-bg); }
+.new-group-card .plus { font-size: 24px; color: var(--gray-400); }
+.new-group-card span { font: 500 13px var(--font-cn); color: var(--gray-500); }
+
+/* ===== NODE PERMISSIONS OVERVIEW ===== */
+.node-tree-overview { background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--radius-lg); padding: 20px; }
+.node-ov-item {
+  display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+  border-radius: var(--radius-sm); transition: var(--transition);
+}
+.node-ov-item:hover { background: var(--gray-50); }
+.node-ov-item .node-ov-icon { font-size: 16px; opacity: 0.6; width: 22px; text-align: center; }
+.node-ov-item .node-ov-name { flex: 1; font: 400 13px var(--font-cn); color: var(--gray-700); }
+.node-ov-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.node-ov-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: var(--radius-full);
+  font: 400 10px var(--font-cn);
+}
+.node-ov-tag.inherited { background: var(--gray-100); color: var(--gray-400); font-style: italic; }
+.node-ov-tag.custom { background: var(--primary-bg); color: var(--primary); }
+.node-ov-tag.manage-t { background: var(--primary-bg); color: var(--primary); }
+.node-ov-tag.edit-t { background: var(--green-bg); color: var(--green); }
+.node-ov-tag.read-t { background: var(--orange-bg); color: var(--orange); }
+.node-ov-tag.none-t { background: var(--gray-100); color: var(--gray-400); text-decoration: line-through; }
+.node-ov-children { padding-left: 28px; border-left: 1px solid var(--gray-100); margin-left: 22px; }
+
+/* Utility */
+@keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+.login-card { animation: fadeUp 0.4s ease; }
+</style>
+</head>
+<body>
+
+<!-- ===== PAGE SWITCHER ===== -->
+<div class="page-switcher">
+  <button class="active" onclick="showPage('login')">登录页</button>
+  <button onclick="showPage('app')">主界面</button>
+  <button onclick="showPage('perm')">权限弹窗</button>
+  <button onclick="showPage('admin')">管理后台</button>
+</div>
+
+<!-- ===== 1. LOGIN PAGE ===== -->
+<div class="page active" id="page-login">
+  <div class="login-page">
+    <div class="login-left">
+      <h1>让团队知识<br><span>流动起来</span></h1>
+      <p>FPGWiki 是面向中小团队的在线文档协作平台。实时编辑、精细权限、全文搜索，让每一份知识都触手可及。</p>
+      <div class="login-features">
+        <div class="login-feature"><div class="dot" style="background:var(--primary)"></div>实时协同</div>
+        <div class="login-feature"><div class="dot" style="background:var(--green)"></div>权限管理</div>
+        <div class="login-feature"><div class="dot" style="background:var(--orange)"></div>全文搜索</div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-card">
+        <div class="login-card-head">
+          <div class="logo"><div class="icon-box">F</div>FPGWiki</div>
+          <p>登录以继续使用</p>
+        </div>
+        <div class="tabs-pill">
+          <button class="active" onclick="switchTab(this,'login')">登录</button>
+          <button onclick="switchTab(this,'register')">注册</button>
+        </div>
+        <div id="tab-login">
+          <div class="form-group"><label>邮箱</label><input type="email" placeholder="you@company.com"></div>
+          <div class="form-group"><label>密码</label><input type="password" placeholder="输入密码"></div>
+          <button class="login-btn">登 录</button>
+          <div class="login-footer"><a href="#">忘记密码？</a></div>
+        </div>
+        <div id="tab-register" style="display:none">
+          <div class="form-group"><label>昵称</label><input type="text" placeholder="你的名字"></div>
+          <div class="form-group"><label>邮箱</label><input type="email" placeholder="you@company.com"></div>
+          <div class="form-group"><label>密码</label><input type="password" placeholder="至少 8 位"></div>
+          <button class="login-btn">注 册</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 2. MAIN APP (Editor) ===== -->
+<div class="page" id="page-app">
+  <div class="app-layout">
+    <div class="topbar">
+      <div class="topbar-brand"><div class="icon-box">F</div>FPGWiki</div>
+      <div class="topbar-search">
+        <span class="s-icon">⌕</span>
+        <input placeholder="搜索文档…" />
+        <span class="shortcut">⌘K</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-icon-btn">🔔<span class="dot"></span></button>
+        <div class="avatar">静</div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-workspace">
+          <div class="ws-icon">F</div>
+          <div class="ws-info"><h4>FPG Team</h4><p>12 位成员</p></div>
+        </div>
+        <button class="new-doc-btn">＋ 新建文档</button>
+      </div>
+      <div class="tree">
+        <div class="tree-section-label">收藏</div>
+        <div class="tree-item"><span class="icon">⭐</span>产品需求文档 v2</div>
+        <div class="tree-item"><span class="icon">⭐</span>系统架构设计</div>
+        <div class="tree-section-label">文档</div>
+        <div class="tree-folder">
+          <div class="tree-item"><span class="icon">📁</span>产品文档</div>
+          <div class="tree-children">
+            <div class="tree-item active"><span class="icon">📄</span>产品需求文档 v2</div>
+            <div class="tree-item"><span class="icon">📄</span>用户调研报告</div>
+            <div class="tree-item"><span class="icon">📄</span>竞品分析</div>
+          </div>
+        </div>
+        <div class="tree-folder">
+          <div class="tree-item"><span class="icon">📁</span>技术方案</div>
+          <div class="tree-children">
+            <div class="tree-item"><span class="icon">📄</span>系统架构设计</div>
+            <div class="tree-item"><span class="icon">📄</span>API 接口规范</div>
+            <div class="tree-item"><span class="icon">📄</span>数据库设计</div>
+          </div>
+        </div>
+        <div class="tree-folder">
+          <div class="tree-item"><span class="icon">📁</span>团队管理</div>
+          <div class="tree-children">
+            <div class="tree-item"><span class="icon">📄</span>周会纪要 04-18</div>
+            <div class="tree-item"><span class="icon">📄</span>OKR 2026 Q2</div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="admin-entry" onclick="showPage('admin')"><span class="icon">⚙️</span>管理后台</div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="editor-topbar">
+        <div class="editor-breadcrumb">产品文档 <span class="sep">/</span> <span class="current">产品需求文档 v2</span></div>
+        <div class="editor-collab">
+          <div class="collab-avatars">
+            <div class="c-avatar" style="background:var(--primary)">静</div>
+            <div class="c-avatar" style="background:var(--green)">李</div>
+            <div class="c-avatar" style="background:var(--orange)">王</div>
+          </div>
+          <span class="online-badge"><span class="pulse"></span>3 人在线</span>
+          <button class="history-btn">🕘 版本历史</button>
+        </div>
+      </div>
+      <div class="editor-wrapper">
+        <div class="editor-paper">
+          <div class="editor-title">产品需求文档 v2</div>
+          <div class="editor-meta">最后编辑：静远 · 10 分钟前 · 版本 #14</div>
+          <div class="editor-toolbar">
+            <button class="toolbar-btn">H1</button><button class="toolbar-btn">H2</button>
+            <span class="toolbar-divider"></span>
+            <button class="toolbar-btn active"><b>B</b></button><button class="toolbar-btn"><i>I</i></button><button class="toolbar-btn"><s>S</s></button>
+            <span class="toolbar-divider"></span>
+            <button class="toolbar-btn">• 列表</button><button class="toolbar-btn">☑ 任务</button><button class="toolbar-btn">❝ 引用</button><button class="toolbar-btn">⟨⟩ 代码</button>
+            <span class="toolbar-divider"></span>
+            <button class="toolbar-btn">📷</button><button class="toolbar-btn">▦</button>
+          </div>
+          <div class="editor-body">
+            <h2>一、项目背景</h2>
+            <p>FPGWiki 旨在为中小团队提供轻量、高效的在线文档协作平台。当前市场上的解决方案普遍存在<strong>功能冗余</strong>、<strong>权限粒度粗</strong>的问题，我们的差异化定位是提供「刚好够用」的协同体验。</p>
+            <blockquote>核心价值主张：让团队知识流动起来，而不是沉睡在本地文件夹中。</blockquote>
+            <h2>二、核心功能</h2>
+            <ul>
+              <li><strong>实时协同编辑</strong>：基于 CRDT 算法，支持多人同时编辑<span class="collab-cursor"></span>同一文档</li>
+              <li><strong>四级权限体系</strong>：<code>manage</code> → <code>edit</code> → <code>readable</code> → <code>none</code></li>
+              <li><strong>版本历史</strong>：自动保存版本快照，支持一键回溯</li>
+              <li><strong>全文搜索</strong>：基于 Elasticsearch，支持中文分词</li>
+            </ul>
+            <h2>三、技术选型</h2>
+            <p>前端采用 <code>React 18</code> + <code>TipTap</code> 编辑器框架，后端使用 <code>Go</code> + <code>PostgreSQL</code>，协同层通过 <span class="highlight">WebSocket + Y.js</span> 实现。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 3. PERMISSION MODAL (shown over main app) ===== -->
+<div class="page" id="page-perm">
+  <div class="app-layout">
+    <!-- Same topbar & sidebar as main app for context -->
+    <div class="topbar">
+      <div class="topbar-brand"><div class="icon-box">F</div>FPGWiki</div>
+      <div class="topbar-search"><span class="s-icon">⌕</span><input placeholder="搜索文档…" /><span class="shortcut">⌘K</span></div>
+      <div class="topbar-actions">
+        <button class="topbar-icon-btn">🔔<span class="dot"></span></button>
+        <div class="avatar">静</div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-workspace"><div class="ws-icon">F</div><div class="ws-info"><h4>FPG Team</h4><p>12 位成员</p></div></div>
+        <button class="new-doc-btn">＋ 新建文档</button>
+      </div>
+      <div class="tree">
+        <div class="tree-section-label">文档</div>
+        <div class="tree-folder">
+          <div class="tree-item"><span class="icon">📁</span>产品文档</div>
+          <div class="tree-children">
+            <div class="tree-item active"><span class="icon">📄</span>产品需求文档 v2</div>
+            <div class="tree-item"><span class="icon">📄</span>用户调研报告</div>
+          </div>
+        </div>
+        <div class="tree-folder">
+          <div class="tree-item"><span class="icon">📁</span>技术方案</div>
+          <div class="tree-children">
+            <div class="tree-item"><span class="icon">📄</span>系统架构设计</div>
+            <div class="tree-item"><span class="icon">📄</span>API 接口规范</div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="admin-entry"><span class="icon">⚙️</span>管理后台</div>
+      </div>
+    </div>
+    <div class="main-content" style="position:relative;">
+      <!-- Dimmed editor behind -->
+      <div class="editor-topbar" style="opacity:0.4;">
+        <div class="editor-breadcrumb">产品文档 <span class="sep">/</span> <span class="current">产品需求文档 v2</span></div>
+      </div>
+      <div class="editor-wrapper" style="opacity:0.3; filter:blur(1px); pointer-events:none;">
+        <div class="editor-paper">
+          <div class="editor-title">产品需求文档 v2</div>
+          <div class="editor-meta">最后编辑：静远 · 10 分钟前</div>
+        </div>
+      </div>
+      <!-- Modal overlay -->
+      <div class="modal-overlay" style="position:absolute;">
+        <div class="perm-modal">
+          <div class="perm-modal-header">
+            <div class="node-info">
+              <div class="node-icon">📄</div>
+              <div>
+                <div class="node-name">产品需求文档 v2</div>
+                <div class="node-type">文档 · 产品文档/</div>
+              </div>
+            </div>
+            <button class="close-btn">✕</button>
+          </div>
+
+          <div class="inherit-banner">
+            <div class="inherit-text">当前权限继承自：<strong>产品文档</strong>（父文件夹）</div>
+            <button class="unlink-btn">脱钩父级，自定义权限</button>
+          </div>
+
+          <div class="perm-modal-body">
+            <table class="perm-table">
+              <thead>
+                <tr>
+                  <th style="width:40%">对象</th>
+                  <th>类型</th>
+                  <th>权限级别</th>
+                  <th style="width:40px"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="perm-user-cell">
+                      <div class="perm-user-avatar" style="background:var(--primary)">张</div>
+                      <span class="perm-user-name">张伟</span>
+                    </div>
+                  </td>
+                  <td><span class="perm-type-tag personal">个人</span></td>
+                  <td><select class="perm-select level-manage"><option selected>manage</option><option>edit</option><option>readable</option><option>none</option></select></td>
+                  <td><button class="perm-delete-btn">🗑</button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="perm-user-cell">
+                      <div class="perm-user-avatar" style="background:var(--green)">李</div>
+                      <span class="perm-user-name">李明</span>
+                    </div>
+                  </td>
+                  <td><span class="perm-type-tag personal">个人</span></td>
+                  <td><select class="perm-select level-edit"><option>manage</option><option selected>edit</option><option>readable</option><option>none</option></select></td>
+                  <td><button class="perm-delete-btn">🗑</button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="perm-user-cell">
+                      <div class="perm-user-avatar" style="background:var(--purple)">前</div>
+                      <span class="perm-user-name">前端组</span>
+                    </div>
+                  </td>
+                  <td><span class="perm-type-tag group">组</span></td>
+                  <td><select class="perm-select level-readable"><option>manage</option><option>edit</option><option selected>readable</option><option>none</option></select></td>
+                  <td><button class="perm-delete-btn">🗑</button></td>
+                </tr>
+                <tr class="perm-row-none">
+                  <td>
+                    <div class="perm-user-cell">
+                      <div class="perm-user-avatar" style="background:var(--gray-300)">测</div>
+                      <span class="perm-user-name">测试组</span>
+                    </div>
+                  </td>
+                  <td><span class="perm-type-tag group">组</span></td>
+                  <td><select class="perm-select level-none"><option>manage</option><option>edit</option><option>readable</option><option selected>none</option></select></td>
+                  <td><button class="perm-delete-btn">🗑</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="perm-modal-footer">
+            <button class="add-perm-btn">＋ 添加成员或组</button>
+            <div class="perm-actions">
+              <button class="btn-cancel">取消</button>
+              <button class="btn-save">保存权限</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 4. ADMIN PAGE ===== -->
+<div class="page" id="page-admin">
+  <div class="app-layout">
+    <div class="topbar">
+      <div class="topbar-brand"><div class="icon-box">F</div>FPGWiki</div>
+      <div class="topbar-search"><span class="s-icon">⌕</span><input placeholder="搜索文档…" /><span class="shortcut">⌘K</span></div>
+      <div class="topbar-actions">
+        <button class="topbar-icon-btn">🔔<span class="dot"></span></button>
+        <div class="avatar">静</div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-workspace"><div class="ws-icon">F</div><div class="ws-info"><h4>FPG Team</h4><p>12 位成员</p></div></div>
+        <button class="new-doc-btn">＋ 新建文档</button>
+      </div>
+      <div class="tree">
+        <div class="tree-section-label">收藏</div>
+        <div class="tree-item"><span class="icon">⭐</span>产品需求文档 v2</div>
+        <div class="tree-section-label">文档</div>
+        <div class="tree-folder">
+          <div class="tree-item"><span class="icon">📁</span>产品文档</div>
+          <div class="tree-children">
+            <div class="tree-item"><span class="icon">📄</span>产品需求文档 v2</div>
+          </div>
+        </div>
+        <div class="tree-folder">
+          <div class="tree-item"><span class="icon">📁</span>技术方案</div>
+          <div class="tree-children">
+            <div class="tree-item"><span class="icon">📄</span>系统架构设计</div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="admin-entry active"><span class="icon">⚙️</span>管理后台</div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="admin-content">
+        <div class="admin-header">
+          <h2>⚙️ 管理后台</h2>
+        </div>
+
+        <div class="admin-tabs">
+          <button class="active" onclick="switchAdminTab(this,'tab-users')">用户管理</button>
+          <button onclick="switchAdminTab(this,'tab-groups')">权限组管理</button>
+          <button onclick="switchAdminTab(this,'tab-nodes')">节点权限总览</button>
+        </div>
+
+        <!-- 2a. User Management -->
+        <div class="admin-tab-content active" id="tab-users">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>用户</th>
+                <th>邮箱</th>
+                <th>角色</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="user-cell"><div class="u-avatar" style="background:linear-gradient(135deg,var(--primary),var(--green))">静</div><span class="u-name">静远</span></div></td>
+                <td>jingyuan@fpg.com</td>
+                <td><span class="role-tag manager">Manager</span></td>
+                <td><span class="status-dot online">在线</span></td>
+                <td><div class="action-cell">
+                  <select class="role-select"><option selected>Manager</option><option>Group Leader</option><option>Member</option></select>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="user-cell"><div class="u-avatar" style="background:var(--green)">李</div><span class="u-name">李明</span></div></td>
+                <td>liming@fpg.com</td>
+                <td><span class="role-tag leader">Group Leader</span></td>
+                <td><span class="status-dot online">在线</span></td>
+                <td><div class="action-cell">
+                  <select class="role-select"><option>Manager</option><option selected>Group Leader</option><option>Member</option></select>
+                  <button class="force-offline-btn">强制下线</button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="user-cell"><div class="u-avatar" style="background:var(--primary)">张</div><span class="u-name">张伟</span></div></td>
+                <td>zhangwei@fpg.com</td>
+                <td><span class="role-tag member">Member</span></td>
+                <td><span class="status-dot online">在线</span></td>
+                <td><div class="action-cell">
+                  <select class="role-select"><option>Manager</option><option>Group Leader</option><option selected>Member</option></select>
+                  <button class="force-offline-btn">强制下线</button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="user-cell"><div class="u-avatar" style="background:var(--orange)">王</div><span class="u-name">王芳</span></div></td>
+                <td>wangfang@fpg.com</td>
+                <td><span class="role-tag member">Member</span></td>
+                <td><span class="status-dot offline">离线</span></td>
+                <td><div class="action-cell">
+                  <select class="role-select"><option>Manager</option><option>Group Leader</option><option selected>Member</option></select>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="user-cell"><div class="u-avatar" style="background:var(--purple)">陈</div><span class="u-name">陈思</span></div></td>
+                <td>chensi@fpg.com</td>
+                <td><span class="role-tag leader">Group Leader</span></td>
+                <td><span class="status-dot offline">离线</span></td>
+                <td><div class="action-cell">
+                  <select class="role-select"><option>Manager</option><option selected>Group Leader</option><option>Member</option></select>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="user-cell"><div class="u-avatar" style="background:var(--rose)">赵</div><span class="u-name">赵敏</span></div></td>
+                <td>zhaomin@fpg.com</td>
+                <td><span class="role-tag member">Member</span></td>
+                <td><span class="status-dot online">在线</span></td>
+                <td><div class="action-cell">
+                  <select class="role-select"><option>Manager</option><option>Group Leader</option><option selected>Member</option></select>
+                  <button class="force-offline-btn">强制下线</button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 2b. Group Management -->
+        <div class="admin-tab-content" id="tab-groups">
+          <div class="group-grid">
+            <div class="group-card">
+              <div class="group-card-header">
+                <h4>前端组</h4>
+                <div class="group-card-actions">
+                  <button title="编辑">✏️</button>
+                  <button class="delete-btn" title="删除">🗑</button>
+                </div>
+              </div>
+              <div class="group-meta">
+                <div class="group-meta-item">组长：<strong>李明</strong></div>
+                <div class="group-meta-item">成员：<strong>5 人</strong></div>
+              </div>
+              <div class="group-members">
+                <div class="gm-avatar" style="background:var(--green)">李</div>
+                <div class="gm-avatar" style="background:var(--primary)">张</div>
+                <div class="gm-avatar" style="background:var(--orange)">王</div>
+                <div class="gm-avatar" style="background:var(--rose)">赵</div>
+                <div class="gm-more">+1</div>
+              </div>
+            </div>
+
+            <div class="group-card">
+              <div class="group-card-header">
+                <h4>后端组</h4>
+                <div class="group-card-actions">
+                  <button title="编辑">✏️</button>
+                  <button class="delete-btn" title="删除">🗑</button>
+                </div>
+              </div>
+              <div class="group-meta">
+                <div class="group-meta-item">组长：<strong>陈思</strong></div>
+                <div class="group-meta-item">成员：<strong>4 人</strong></div>
+              </div>
+              <div class="group-members">
+                <div class="gm-avatar" style="background:var(--purple)">陈</div>
+                <div class="gm-avatar" style="background:var(--primary-dark)">刘</div>
+                <div class="gm-avatar" style="background:var(--green)">孙</div>
+                <div class="gm-avatar" style="background:var(--orange)">周</div>
+              </div>
+            </div>
+
+            <div class="group-card">
+              <div class="group-card-header">
+                <h4>测试组</h4>
+                <div class="group-card-actions">
+                  <button title="编辑">✏️</button>
+                  <button class="delete-btn" title="删除">🗑</button>
+                </div>
+              </div>
+              <div class="group-meta">
+                <div class="group-meta-item">组长：<strong>王芳</strong></div>
+                <div class="group-meta-item">成员：<strong>3 人</strong></div>
+              </div>
+              <div class="group-members">
+                <div class="gm-avatar" style="background:var(--orange)">王</div>
+                <div class="gm-avatar" style="background:var(--gray-400)">杨</div>
+                <div class="gm-avatar" style="background:var(--rose)">黄</div>
+              </div>
+            </div>
+
+            <div class="new-group-card" onclick="">
+              <div class="plus">＋</div>
+              <span>新建权限组</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2c. Node Permissions Overview -->
+        <div class="admin-tab-content" id="tab-nodes">
+          <div class="node-tree-overview">
+
+            <div class="node-ov-item">
+              <span class="node-ov-icon">📁</span>
+              <span class="node-ov-name" style="font-weight:500; color:var(--gray-900)">产品文档</span>
+              <div class="node-ov-tags">
+                <span class="node-ov-tag custom">自定义</span>
+                <span class="node-ov-tag manage-t">张伟 manage</span>
+                <span class="node-ov-tag edit-t">前端组 edit</span>
+              </div>
+            </div>
+            <div class="node-ov-children">
+              <div class="node-ov-item">
+                <span class="node-ov-icon">📄</span>
+                <span class="node-ov-name">产品需求文档 v2</span>
+                <div class="node-ov-tags">
+                  <span class="node-ov-tag inherited">继承</span>
+                </div>
+              </div>
+              <div class="node-ov-item">
+                <span class="node-ov-icon">📄</span>
+                <span class="node-ov-name">用户调研报告</span>
+                <div class="node-ov-tags">
+                  <span class="node-ov-tag custom">自定义</span>
+                  <span class="node-ov-tag read-t">后端组 readable</span>
+                  <span class="node-ov-tag none-t">测试组 none</span>
+                </div>
+              </div>
+              <div class="node-ov-item">
+                <span class="node-ov-icon">📄</span>
+                <span class="node-ov-name">竞品分析</span>
+                <div class="node-ov-tags">
+                  <span class="node-ov-tag inherited">继承</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="node-ov-item" style="margin-top:8px;">
+              <span class="node-ov-icon">📁</span>
+              <span class="node-ov-name" style="font-weight:500; color:var(--gray-900)">技术方案</span>
+              <div class="node-ov-tags">
+                <span class="node-ov-tag custom">自定义</span>
+                <span class="node-ov-tag manage-t">陈思 manage</span>
+                <span class="node-ov-tag edit-t">后端组 edit</span>
+                <span class="node-ov-tag read-t">前端组 readable</span>
+              </div>
+            </div>
+            <div class="node-ov-children">
+              <div class="node-ov-item">
+                <span class="node-ov-icon">📄</span>
+                <span class="node-ov-name">系统架构设计</span>
+                <div class="node-ov-tags">
+                  <span class="node-ov-tag inherited">继承</span>
+                </div>
+              </div>
+              <div class="node-ov-item">
+                <span class="node-ov-icon">📄</span>
+                <span class="node-ov-name">API 接口规范</span>
+                <div class="node-ov-tags">
+                  <span class="node-ov-tag custom">自定义</span>
+                  <span class="node-ov-tag edit-t">前端组 edit</span>
+                </div>
+              </div>
+              <div class="node-ov-item">
+                <span class="node-ov-icon">📄</span>
+                <span class="node-ov-name">数据库设计</span>
+                <div class="node-ov-tags">
+                  <span class="node-ov-tag inherited">继承</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="node-ov-item" style="margin-top:8px;">
+              <span class="node-ov-icon">📁</span>
+              <span class="node-ov-name" style="font-weight:500; color:var(--gray-900)">团队管理</span>
+              <div class="node-ov-tags">
+                <span class="node-ov-tag custom">自定义</span>
+                <span class="node-ov-tag manage-t">静远 manage</span>
+                <span class="node-ov-tag none-t">测试组 none</span>
+              </div>
+            </div>
+            <div class="node-ov-children">
+              <div class="node-ov-item">
+                <span class="node-ov-icon">📄</span>
+                <span class="node-ov-name">周会纪要 04-18</span>
+                <div class="node-ov-tags">
+                  <span class="node-ov-tag inherited">继承</span>
+                </div>
+              </div>
+              <div class="node-ov-item">
+                <span class="node-ov-icon">📄</span>
+                <span class="node-ov-name">OKR 2026 Q2</span>
+                <div class="node-ov-tags">
+                  <span class="node-ov-tag inherited">继承</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page-switcher button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+function switchTab(btn, tab) {
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-login').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('tab-register').style.display = tab === 'register' ? 'block' : 'none';
+}
+function switchAdminTab(btn, tabId) {
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.admin-tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+}
+</script>
+</body>
+</html>
